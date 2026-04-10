@@ -16,10 +16,15 @@
     --danger-bg: #FEF2F2; --danger-text: #B91C1C;
     --gradient-start: #FFB74B; --gradient-mid: #FF6550; --gradient-end: #6769FF;
     --shadow-sm: 0 1px 3px rgba(0,0,0,.08); --shadow-md: 0 4px 12px rgba(0,0,0,.10);
+    /* Pyramid colors from Fidia brand */
+    --pyr-found: #1B3A5C;
+    --pyr-comm: #2B5F8A;
+    --pyr-sales: #E8993E;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   body{font-family:'Inter',system-ui,sans-serif;background:var(--neutral-50);color:var(--neutral-700);font-size:14px;line-height:1.5}
 
+  /* ── SIDEBAR ── */
   .sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--neutral-0);border-right:1px solid var(--neutral-200);display:flex;flex-direction:column;z-index:100;transition:width 200ms}
   .sidebar.collapsed{width:55px}
   .sidebar.collapsed .sidebar-label,.sidebar.collapsed .logo-text,.sidebar.collapsed .sidebar-section-title{display:none}
@@ -40,6 +45,7 @@
   .collapse-btn{height:36px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 12px;border-radius:8px;cursor:pointer;width:100%;color:var(--neutral-500);font-size:13px;font-weight:500;background:none;border:none;transition:all 150ms;font-family:inherit}
   .collapse-btn:hover{background:var(--neutral-100)}
 
+  /* ── MAIN ── */
   .main{margin-left:260px;transition:margin-left 200ms}
   .sidebar.collapsed~.main{margin-left:55px}
   .topbar{height:56px;background:var(--neutral-0);border-bottom:1px solid var(--neutral-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
@@ -50,17 +56,20 @@
   .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--neutral-400);pointer-events:none}
   .content{padding:24px;max-width:1280px}
 
+  /* ── STATS ── */
   .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
   .stat-card{background:var(--neutral-0);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200)}
   .stat-label{font-size:12px;font-weight:600;color:var(--neutral-500);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
   .stat-value{font-size:28px;font-weight:700;color:var(--neutral-900)}
   .stat-sub{font-size:12px;color:var(--neutral-500);margin-top:4px}
 
+  /* ── TABS ── */
   .tabs{display:flex;gap:0;border-bottom:1px solid var(--neutral-200);margin-bottom:24px;overflow-x:auto}
   .tab{height:44px;padding:0 20px;display:flex;align-items:center;font-size:13px;font-weight:500;color:var(--neutral-500);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 150ms;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
   .tab:hover{color:var(--neutral-700)}
   .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
 
+  /* ── CARDS ── */
   .mapping-grid{display:flex;flex-direction:column;gap:16px}
   .mapping-card{background:var(--neutral-0);border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200);overflow:hidden;transition:box-shadow 200ms}
   .mapping-card:hover{box-shadow:var(--shadow-md)}
@@ -129,11 +138,25 @@
   .data-table thead th{text-align:left;padding:12px 16px;font-size:12px;font-weight:600;color:var(--neutral-700);background:var(--neutral-100);position:sticky;top:56px;z-index:10}
   .data-table tbody td{padding:10px 16px;font-size:13px;color:var(--neutral-700);border-top:1px solid var(--neutral-200);vertical-align:top}
   .data-table tbody tr:hover{background:var(--neutral-50)}
-
-  /* Skill cards grid for Skills view */
   .skill-grid-card{background:var(--neutral-50);border-radius:8px;padding:12px 14px;border:1px solid var(--neutral-200)}
   .skill-grid-card .ind-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--neutral-900);margin-bottom:4px}
   .skill-grid-card .ind-def{font-size:12px;color:var(--neutral-500);line-height:1.5;padding-left:14px}
+
+  /* ── PYRAMID ── */
+  .pyramid-section{background:var(--neutral-0);border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200);padding:32px;margin-bottom:32px}
+  .pyramid-title{font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:24px;text-align:center}
+  .pyramid-container{display:flex;align-items:center;justify-content:center;gap:0;max-width:960px;margin:0 auto}
+  .pyramid-visual{flex-shrink:0;position:relative}
+  .pyramid-right{flex:1;display:flex;flex-direction:column;gap:0}
+  .pyr-level{display:flex;align-items:center;gap:0}
+  .pyr-trapezoid{display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;font-weight:600;font-size:12px;line-height:1.35;padding:12px 8px;clip-path:polygon(var(--tl) 0, var(--tr) 0, 100% 100%, 0 100%)}
+  .pyr-comps{display:flex;flex-direction:column;gap:4px;padding:8px 0 8px 16px}
+  .pyr-comp-item{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--neutral-700)}
+  .pyr-comp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+  .pyr-comp-arrow{color:var(--neutral-300);font-size:11px;margin:0 4px}
+  .pyr-skill-tag{font-size:11px;font-weight:500;color:#5557DD;background:var(--primary-light);padding:2px 8px;border-radius:9999px}
+  .pyr-connector{width:24px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .pyr-connector-line{width:1px;height:100%;border-left:2px dashed var(--neutral-300)}
 
   @media(max-width:1024px){
     .stats-row{grid-template-columns:repeat(2,1fr)}
@@ -141,6 +164,7 @@
     .card-section+.card-section{border-left:none;border-top:1px solid var(--neutral-200)}
     .questions-row{grid-template-columns:1fr}
     .question-card+.question-card{border-left:none;border-top:1px solid var(--neutral-200)}
+    .pyramid-container{flex-direction:column}
   }
   @media(max-width:768px){
     .sidebar{display:none}.main{margin-left:0!important}
@@ -155,14 +179,14 @@
     <span class="logo-text">Skillvue</span>
   </div>
   <div class="sidebar-nav">
-    <div class="sidebar-section-title">Mapping</div>
+    <div class="sidebar-section-title">Assessment</div>
     <a class="nav-item active" data-view="overview">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
       <span class="sidebar-label">Overview</span>
     </a>
-    <a class="nav-item" data-view="competences">
+    <a class="nav-item" data-view="model">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
-      <span class="sidebar-label">Competences</span>
+      <span class="sidebar-label">Assessment Model</span>
     </a>
     <a class="nav-item" data-view="questions">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
@@ -191,13 +215,14 @@
     <span class="topbar-title">Fidia MSR — Competency Mapping</span>
     <div class="search-wrap">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-      <input class="search-box" type="text" placeholder="Search competences, skills, indicators\u2026" id="searchInput" oninput="handleSearch()">
+      <input class="search-box" type="text" placeholder="Search competences, skills, indicators…" id="searchInput" oninput="handleSearch()">
     </div>
   </header>
   <div class="content" id="content"></div>
 </div>
 
 <script>
+// ═══════════════ SKILL DEFINITIONS ═══════════════
 const SD={
 "Demonstrating Acumen":{d:"Identifying and exploiting commercial opportunities, maintaining market awareness, and managing financial and organizational levers to create value.",bi:{"Monitoring Markets":"Staying informed about market trends, competitor actions, and customer needs to anticipate changes.","Identifying Opportunities":"Spotting gaps or novel combinations of resources that can be turned into viable initiatives.","Anticipating Trends":"Exercising business acumen to predict market trends and seize commercial opportunities with accuracy.","Controlling Costs":"Managing expenditures prudently to protect margins and allocate resources effectively."}},
 "Delivering Result":{d:"Ensuring outputs meet required standards and are delivered on time through systematic work and quality control.",bi:{"Focusing on Customers":"Understanding and prioritizing customer requirements and responding to feedback.","Setting Quality Standards":"Defining and communicating rigorous criteria for output results.","Working Systematically":"Following organized procedures and logical workflows to maintain consistency and efficiency.","Maintaining Quality Processes":"Upholding documented processes and controls that sustain output quality.","Maintaining Productivity":"Sustaining output rates and efficiency to meet operational targets."}},
@@ -213,22 +238,30 @@ const SD={
 "Learning Plasticity":{d:"The ability to acquire, organize, and apply new knowledge or skills to improve performance and inform decisions.",bi:{"Learning Quickly":"Absorbing and applying new information or skills with speed and accuracy.","Accepting New Ideas":"Being open to novel concepts and willing to consider and test them.","Thinking Quickly":"Generating rapid solutions while maintaining accuracy.","Supporting Organizational Learning":"Facilitating knowledge sharing, reflection, and institutionalization of lessons across the organization.","Managing Knowledge":"Capturing, organizing, curating, and making accessible organizational knowledge and best practices."}}
 };
 
+// ═══════════════ MAPPING DATA ═══════════════
 const DATA=[
 {area:"Foundational Professional Competences",ac:"area-foundational",comp:"Market Awareness",desc:"1: Knows the strengths and weaknesses of own products and those of competitors.\n2: Knows local dynamics (PTO) by adapting business offerings to regional peculiarities.\n3: Investigates the products used by the customer and highlights the advantages of one\u2019s own product over the one in use.\n4: Provides suggestions/input to colleagues based on observations of customer behavior and competitors.",skill:"Demonstrating Acumen",mt:"mapped",inds:["Monitoring Markets","Identifying Opportunities","Anticipating Trends","Controlling Costs"],rat:"Market awareness maps to all four Acumen BIs: monitoring competitor/market dynamics, identifying commercial gaps, anticipating trends, and understanding cost levers.",q1:"Describe a past work situation in which you recognized a potential opportunity for clients but faced internal concerns related to costs, risks, or feasibility. How did you evaluate the situation, address the concerns raised, and what outcome followed?",q2:"You are reviewing your territory\u2019s performance data and notice that a specific therapeutic area shows untapped potential \u2014 physicians in the region are prescribing older treatments despite clinical evidence supporting newer alternatives. At the same time, your manager raises concerns about the cost of launching a focused campaign. How would you evaluate the opportunity, weigh the commercial risks, and decide on a course of action?",q1t:"experience",q2t:"situational"},
 {area:"Foundational Professional Competences",ac:"area-foundational",comp:"Customer Centric Approach",desc:"1: Actively listens to customers to understand their needs without interrupting.\n2: Proposes customized solutions by highlighting specific benefits that directly address the customer\u2019s needs.\n3: Anticipates potential problems the customer may encounter by offering preventive solutions.\n4: Monitors and provides follow-up on the progress of proposed solutions and adjusts the strategy based on the results and suggestions received from the practitioner.",skill:"Delivering Result",mt:"mapped",inds:["Focusing on Customers","Setting Quality Standards","Working Systematically","Maintaining Quality Processes","Maintaining Productivity"],rat:"Customer centricity is embedded across all five Delivering Result BIs: understanding customer needs, setting standards that reflect customer expectations, working systematically, maintaining quality, and sustaining productivity.",q1:"A key client reports recurring issues affecting product quality and delivery reliability, creating uncertainty about continuing the partnership. How would you examine the situation, move the necessary actions forward, and communicate next steps to stabilize the relationship?",q2:"Describe a past work situation in which you identified that a client\u2019s expectations were not being fully met. How did you recognize the gap, what actions did you take to address it, and what was the outcome for the client relationship?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Presenting",mt:"mapped",inds:["Speaking Fluently","Explaining Concepts","Articulating Key Points","Speaking Publicly","Projecting Credibility","Responding to Audience"],rat:"All six Presenting BIs are directly relevant for MSR communication with HCPs: fluency, explaining complex medical concepts, articulating key messages, public speaking, projecting credibility, and handling questions.",q1:"During a discussion about a technical product or solution with senior stakeholders, attention seems to decrease early on. How would you adapt the way information is conveyed during the interaction to support clarity and shared understanding?",q2:"Describe a past work situation in which a discussion about a product, idea, or proposal became challenging due to questions or pushback from others. How did the exchange unfold, and what was the final outcome?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Influencing Opinion",mt:"mapped",inds:["Making an Impact","Framing Conversations","Appealing to Emotions"],rat:"The influence dimension of this competence requires shaping HCP attitudes and decisions. All three BIs \u2014 making an impact, framing conversations, and appealing to emotions \u2014 are essential in persuasive scientific communication.",q1:null,q2:null},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Emotional Intelligence",desc:"1: Identifies verbal and nonverbal signals (tone of voice, facial expressions, gestures) to understand the clinician\u2019s state of mind and adapt approach.\n2: Remains calm and knows techniques for managing one\u2019s emotions even in the face of objections or contrary statements from the interlocutor.\n3: Shows genuine attention during conversations by nodding, asking focused questions, and allowing space for the practitioner to express him/herself.\n4: Gathers feedback from the practitioner and engages him or her in the conversation, showing openness.",skill:"Emotional Intelligence",mt:"direct",inds:["Showing Consideration","Showing Empathy","Stabilizing Emotion","Tolerating Criticism","Managing Conflict"],rat:"Direct 1:1 match. All five BIs \u2014 showing consideration, empathy, stabilizing emotion, tolerating criticism, and managing conflict \u2014 are core to the interpersonal effectiveness required in HCP-facing roles.",q1:"During a scheduled visit, you notice that the physician appears visibly frustrated and distracted. The physician begins to respond curtly to your opening remarks. How would you read the situation, manage your own reaction, and adjust the interaction to maintain a constructive dialogue?",q2:"Describe a past work situation in which you had to manage a tense or emotionally charged interaction with a client, colleague, or stakeholder. How did you recognize the emotional dynamics at play, how did you regulate your own response, and what outcome resulted?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Negotiations",desc:"1: Explains in a clear manner that addresses the client\u2019s specific needs.\n2: Listens carefully to client\u2019s concerns/objections, rephrases to make sure he/she understands or asks questions.\n3: Responds calmly to objections, showing openness, providing accurate answers also supported by data and evidence.\n4: Emphasizes and makes perceived value of the solution and how it can benefit both physician and patients.",skill:"Negotiating",mt:"direct",inds:["Promoting Ideas","Gaining Agreement","Managing Politics"],rat:"Direct 1:1 match. All three BIs cover the commercial negotiation cycle: promoting clinical/commercial proposals, gaining stakeholder agreement, and navigating organizational politics.",q1:"A hospital pharmacy committee is reviewing your product alongside two competitor options. The lead pharmacist raises concerns about pricing and asks you to justify why your solution should be selected despite a higher cost. How would you structure your response to address the objection, demonstrate value, and work toward an agreement that satisfies both parties?",q2:"Describe a past work situation in which you had to negotiate with a client or stakeholder who had strong objections or competing priorities. How did you listen to their concerns, present your position, and what agreement or outcome was ultimately reached?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options, e.g., combination of products, different strategies to best meet needs.\n4: Does follow up to check whether the proposed solutions is in line and works or gathers insights for improvement.",skill:"Problem Solving",mt:"mapped",inds:["Evaluating Information","Testing Assumptions","Producing Solutions","Making Judgments","Demonstrating Systems Thinking"],rat:"Solution orientation maps to all five Problem Solving BIs: evaluating clinical or commercial information, testing assumptions, generating practical solutions, making judgments under uncertainty, and applying systems thinking.",q1:"A dermatologist you visit regularly mentions that the current treatment protocol is producing inconsistent results for a specific patient segment. How would you approach the conversation to understand the underlying issue, evaluate possible options, and propose a tailored solution?",q2:"Describe a past work situation in which a client or stakeholder presented a complex problem that did not have an obvious solution. How did you gather information, evaluate alternatives, and what solution did you propose? What was the outcome?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options, e.g., combination of products, different strategies to best meet needs.\n4: Does follow up to check whether the proposed solutions is in line and works or gathers insights for improvement.",skill:"Cognitive Flexibility",mt:"mapped",inds:["Adapting Situations","Gathering Information","Adapting Interpersonal Style","Showing Cultural Awareness","Managing Ambiguity"],rat:"Being solutions-oriented in a dynamic healthcare environment also requires all five Cognitive Flexibility BIs: adapting to changing circumstances, gathering information, adjusting interpersonal approach, showing cultural awareness, and managing ambiguity.",q1:null,q2:null},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact, availability over time, follow up, etc.\n2: Positions as a trusted advisor, sharing information, best practices, suggesting solutions.\n3: Presents clear information and openly admits if the answer to a question is not known, promising to provide clarification quickly.\n4: Involves the physician, when possible, in activities such as educational meetings or scientific projects.",skill:"Building Relations",mt:"direct",inds:["Building Relationship","Developing Network","Relating Across Levels"],rat:"Direct 1:1 match. All three BIs \u2014 building individual relationships, developing a professional network, and relating across hierarchical levels \u2014 map precisely to MSR relationship requirements.",q1:"You have recently been assigned a new territory and need to build relationships with physicians who have long-standing ties to a competitor\u2019s representative. How would you approach establishing trust, demonstrating value, and building a lasting professional relationship over time?",q2:"Describe a past work situation in which you successfully built a strong professional relationship with a client or stakeholder who was initially distant or unresponsive. What steps did you take over time, and what was the result?",q1t:"situational",q2t:"experience"},
-{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact, availability over time, follow up, etc.\n2: Positions as a trusted advisor, sharing information, best practices, suggesting solutions.\n3: Presents clear information and openly admits if the answer to a question is not known, promising to provide clarification quickly.\n4: Involves the physician, when possible, in activities such as educational meetings or scientific projects.",skill:"Focusing on Others",mt:"mapped",inds:["Understanding Others","Listening to Others","Consulting Others","Supporting Others","Caring for Others"],rat:"The consultative, empathic dimension of relationship building requires all five Focusing on Others BIs: understanding others\u2019 perspectives, active listening, consulting stakeholders, supporting colleagues/customers, and demonstrating genuine care.",q1:null,q2:null},
-{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"CRM",desc:"1: Regularly updates the CRM with customer and HCP information, tracking \u201con-target\u201d doctors and their potential.\n2: Records key information from customer interactions, including needs and objections and accurately reports sample disbursement for all product categories.\n3: Submits privacy notices to HCPs and verifying that their privacy preferences align with the intended activity.\n4: Completes training videos from headquarters, engages with the content, and seeks clarification on new CRM features to enhance performance.",skill:"Demonstrating Expertise",mt:"mapped",inds:["Applying Technical Expertise","Developing Technical Expertise","Using Technology"],rat:"CRM proficiency has a behavioral dimension \u2014 applying technical expertise (using the system correctly), developing expertise (staying updated on features), and using technology (integrating CRM into daily workflow).",q1:"You notice that your CRM data for several high-potential physicians is incomplete \u2014 some visit notes are missing, sample disbursements have not been logged consistently, and privacy consent records are outdated. How would you prioritize and address the data gaps, ensure compliance, and prepare a reliable overview of your activity?",q2:"Describe a past work situation in which your ability to use a tool or system effectively made a meaningful difference in your work results. What specific features or practices did you rely on, and what impact did this have on your performance?",q1t:"situational",q2t:"experience"},
-{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"Digital Tools (Office, Excel etc.)",desc:"1: Aptitude in using new social platforms to connect with HCP, share relevant content or learn about industry trends.\n2: Ability to create charts or presentations with excel or power point.\n3: Uses other applications to better manage their operations.\n4: Ability to use video call systems (like MS Teams) and messaging in an effective way.",skill:"Learning Plasticity",mt:"mapped",inds:["Learning Quickly","Accepting New Ideas","Thinking Quickly","Supporting Organizational Learning","Managing Knowledge"],rat:null,q1:"Your team is asked to start using a new digital platform to share scientific content with healthcare professionals remotely. You have limited experience with this type of tool, and your first virtual meeting with a key opinion leader is scheduled in a few days. How would you prepare yourself and ensure the interaction is effective?",q2:"Describe a past work situation in which you had to quickly learn to use a new digital tool, application, or platform that was unfamiliar to you. How did you approach the learning process, what difficulties did you encounter, and how did it change the way you work?",q1t:"situational",q2t:"experience"}
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Presenting",mt:"mapped",inds:["Speaking Fluently","Explaining Concepts","Articulating Key Points","Speaking Publicly","Projecting Credibility","Responding to Audience"],rat:"All six Presenting BIs are directly relevant for MSR communication with HCPs.",q1:"During a discussion about a technical product or solution with senior stakeholders, attention seems to decrease early on. How would you adapt the way information is conveyed during the interaction to support clarity and shared understanding?",q2:"Describe a past work situation in which a discussion about a product, idea, or proposal became challenging due to questions or pushback from others. How did the exchange unfold, and what was the final outcome?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Influencing Opinion",mt:"mapped",inds:["Making an Impact","Framing Conversations","Appealing to Emotions"],rat:"The influence dimension requires shaping HCP attitudes and decisions. All three BIs are essential in persuasive scientific communication.",q1:null,q2:null},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Emotional Intelligence",desc:"1: Identifies verbal and nonverbal signals to understand the clinician\u2019s state of mind and adapt approach.\n2: Remains calm and knows techniques for managing one\u2019s emotions even in the face of objections.\n3: Shows genuine attention during conversations by nodding, asking focused questions, and allowing space for the practitioner.\n4: Gathers feedback from the practitioner and engages him or her in the conversation, showing openness.",skill:"Emotional Intelligence",mt:"direct",inds:["Showing Consideration","Showing Empathy","Stabilizing Emotion","Tolerating Criticism","Managing Conflict"],rat:"Direct 1:1 match. All five BIs are core to the interpersonal effectiveness required in HCP-facing roles.",q1:"During a scheduled visit, you notice that the physician appears visibly frustrated and distracted. The physician begins to respond curtly to your opening remarks. How would you read the situation, manage your own reaction, and adjust the interaction?",q2:"Describe a past work situation in which you had to manage a tense or emotionally charged interaction. How did you recognize the emotional dynamics, regulate your own response, and what outcome resulted?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Negotiations",desc:"1: Explains in a clear manner that addresses the client\u2019s specific needs.\n2: Listens carefully to client\u2019s concerns/objections, rephrases to make sure he/she understands.\n3: Responds calmly to objections, showing openness, providing accurate answers supported by data and evidence.\n4: Emphasizes the perceived value of the solution and how it can benefit both physician and patients.",skill:"Negotiating",mt:"direct",inds:["Promoting Ideas","Gaining Agreement","Managing Politics"],rat:"Direct 1:1 match. All three BIs cover the commercial negotiation cycle.",q1:"A hospital pharmacy committee is reviewing your product alongside two competitor options. The lead pharmacist raises concerns about pricing. How would you structure your response to address the objection, demonstrate value, and work toward an agreement?",q2:"Describe a past work situation in which you had to negotiate with a client who had strong objections or competing priorities. How did you listen, present your position, and what outcome was reached?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options to best meet needs.\n4: Does follow up to check whether the proposed solutions work or gathers insights for improvement.",skill:"Problem Solving",mt:"mapped",inds:["Evaluating Information","Testing Assumptions","Producing Solutions","Making Judgments","Demonstrating Systems Thinking"],rat:"Solution orientation maps to all five Problem Solving BIs.",q1:"A dermatologist mentions that the current treatment protocol is producing inconsistent results. How would you approach the conversation to understand the issue and propose a tailored solution?",q2:"Describe a past work situation in which a client presented a complex problem without an obvious solution. How did you gather information and what solution did you propose?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options to best meet needs.\n4: Does follow up to check whether the proposed solutions work or gathers insights for improvement.",skill:"Cognitive Flexibility",mt:"mapped",inds:["Adapting Situations","Gathering Information","Adapting Interpersonal Style","Showing Cultural Awareness","Managing Ambiguity"],rat:"Being solutions-oriented also requires all five Cognitive Flexibility BIs: adapting to changing circumstances, gathering information, adjusting approach, showing cultural awareness, and managing ambiguity.",q1:null,q2:null},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact and follow up.\n2: Positions as a trusted advisor, sharing information and suggesting solutions.\n3: Presents clear information and openly admits if the answer is not known.\n4: Involves the physician in educational meetings or scientific projects.",skill:"Building Relations",mt:"direct",inds:["Building Relationship","Developing Network","Relating Across Levels"],rat:"Direct 1:1 match. All three BIs map precisely to MSR relationship requirements.",q1:"You have recently been assigned a new territory and need to build relationships with physicians who have ties to a competitor\u2019s representative. How would you approach establishing trust and building a lasting relationship?",q2:"Describe a past work situation in which you successfully built a strong professional relationship with an initially distant or unresponsive stakeholder. What steps did you take?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact and follow up.\n2: Positions as a trusted advisor, sharing information and suggesting solutions.\n3: Presents clear information and openly admits if the answer is not known.\n4: Involves the physician in educational meetings or scientific projects.",skill:"Focusing on Others",mt:"mapped",inds:["Understanding Others","Listening to Others","Consulting Others","Supporting Others","Caring for Others"],rat:"The consultative, empathic dimension of relationship building requires all five Focusing on Others BIs.",q1:null,q2:null},
+{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"CRM",desc:"1: Regularly updates the CRM with customer and HCP information.\n2: Records key information from customer interactions including needs and objections.\n3: Submits privacy notices to HCPs and verifies privacy preferences.\n4: Completes training videos and seeks clarification on new CRM features.",skill:"Demonstrating Expertise",mt:"mapped",inds:["Applying Technical Expertise","Developing Technical Expertise","Using Technology"],rat:"CRM proficiency has a behavioral dimension \u2014 applying technical expertise, developing expertise, and using technology.",q1:"You notice that your CRM data for several high-potential physicians is incomplete. How would you prioritize and address the data gaps, ensure compliance, and prepare a reliable overview of your activity?",q2:"Describe a past work situation in which your ability to use a tool or system effectively made a meaningful difference in your work results.",q1t:"situational",q2t:"experience"},
+{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"Digital Tools (Office, Excel etc.)",desc:"1: Aptitude in using new social platforms to connect with HCP.\n2: Ability to create charts or presentations with excel or power point.\n3: Uses other applications to better manage operations.\n4: Ability to use video call systems effectively.",skill:"Learning Plasticity",mt:"mapped",inds:["Learning Quickly","Accepting New Ideas","Thinking Quickly","Supporting Organizational Learning","Managing Knowledge"],rat:null,q1:"Your team is asked to start using a new digital platform. You have limited experience and your first virtual meeting with a key opinion leader is in a few days. How would you prepare?",q2:"Describe a past work situation in which you had to quickly learn a new digital tool. How did you approach the learning process and how did it change the way you work?",q1t:"situational",q2t:"experience"}
 ];
 
 const AREAS=[...new Set(DATA.map(d=>d.area))];
+// Pyramid data structure
+const PYRAMID=[
+  {area:"Optimizing Sales Systems Management",color:"var(--pyr-sales)",comps:["CRM","Digital Tools (Office, Excel etc.)"]},
+  {area:"Medical-Scientific & Persuasive Communication Skills",color:"var(--pyr-comm)",comps:["Communication / Influence","Emotional Intelligence","Negotiations","Solutions Oriented","Relationship Building"]},
+  {area:"Foundational Professional Competences",color:"var(--pyr-found)",comps:["Market Awareness","Customer Centric Approach"]}
+];
+
 let view='overview',areaF='all',sq='';
 
 document.querySelectorAll('.nav-item[data-view]').forEach(el=>{
@@ -236,7 +269,6 @@ document.querySelectorAll('.nav-item[data-view]').forEach(el=>{
 });
 function handleSearch(){sq=document.getElementById('searchInput').value.toLowerCase();render()}
 function toggleCard(i){document.querySelector(`[data-card="${i}"]`).classList.toggle('open')}
-
 function gf(){
   let f=DATA;
   if(areaF!=='all')f=f.filter(d=>d.area===areaF);
@@ -246,14 +278,114 @@ function gf(){
 function pd(desc){return desc.split('\n').map(l=>l.replace(/^\d+:\s*/,'').trim()).filter(Boolean)}
 function gid(skill,ind){const s=SD[skill];if(!s)return'';for(const[k,v]of Object.entries(s.bi)){if(k.toLowerCase()===ind.toLowerCase())return v}return''}
 
-function rStats(){
-  const uc=new Set(DATA.map(d=>d.comp)).size,us=new Set(DATA.map(d=>d.skill)).size,ti=DATA.reduce((s,d)=>s+d.inds.length,0),tq=DATA.filter(d=>d.q1).length+DATA.filter(d=>d.q2).length;
-  return`<div class="stats-row"><div class="stat-card"><div class="stat-label">Fidia Competences</div><div class="stat-value">${uc}</div><div class="stat-sub">Across ${AREAS.length} areas</div></div><div class="stat-card"><div class="stat-label">Skillvue Skills</div><div class="stat-value">${us}</div><div class="stat-sub">${DATA.filter(d=>d.mt==='direct').length} direct \xb7 ${DATA.filter(d=>d.mt==='mapped').length} mapped</div></div><div class="stat-card"><div class="stat-label">Behavioral Indicators</div><div class="stat-value">${ti}</div><div class="stat-sub">Avg ${(ti/us).toFixed(1)} per skill</div></div><div class="stat-card"><div class="stat-label">Assessment Questions</div><div class="stat-value">${tq}</div><div class="stat-sub">Situational & Experience-based</div></div></div>`;
+// ═══════════════ OVERVIEW ═══════════════
+function rOverview(){
+  const tq=DATA.filter(d=>d.q1).length+DATA.filter(d=>d.q2).length;
+  const minTime=tq*30; // seconds
+  const maxTime=tq*120; // seconds
+  const fmtTime=(s)=>{const m=Math.floor(s/60);return m<60?`${m} min`:`${Math.floor(m/60)}h ${m%60}min`};
+  const uc=new Set(DATA.map(d=>d.comp)).size;
+  const us=new Set(DATA.map(d=>d.skill)).size;
+  const ti=DATA.reduce((s,d)=>s+d.inds.length,0);
+
+  // Build pyramid SVG
+  const pyrSVG = renderPyramidSVG();
+
+  return`
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-label">Total Questions</div>
+      <div class="stat-value">${tq}</div>
+      <div class="stat-sub">${DATA.filter(d=>d.q1&&d.q1t==='situational').length+DATA.filter(d=>d.q2&&d.q2t==='situational').length} situational \xb7 ${DATA.filter(d=>d.q1&&d.q1t==='experience').length+DATA.filter(d=>d.q2&&d.q2t==='experience').length} experience-based</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Estimated Duration</div>
+      <div class="stat-value">${fmtTime(minTime)}\u2013${fmtTime(maxTime)}</div>
+      <div class="stat-sub">30 sec \u2013 2 min per question</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Competences & Skills</div>
+      <div class="stat-value">${uc} \u2192 ${us}</div>
+      <div class="stat-sub">${DATA.filter(d=>d.mt==='direct').length} direct match \xb7 ${DATA.filter(d=>d.mt==='mapped').length} mapped</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Behavioral Indicators</div>
+      <div class="stat-value">${ti}</div>
+      <div class="stat-sub">Avg ${(ti/us).toFixed(1)} per skill</div>
+    </div>
+  </div>
+  <div class="pyramid-section">
+    <div class="pyramid-title">Fidia MSR Competency Model \u2192 Skillvue Framework</div>
+    ${pyrSVG}
+  </div>`;
 }
+
+function renderPyramidSVG(){
+  // Get unique competences and their mapped skills per area
+  const areaData = PYRAMID.map(p=>{
+    const comps = p.comps.map(c=>{
+      const mappings = DATA.filter(d=>d.comp===c);
+      return {name:c, skills: mappings.map(m=>m.skill)};
+    });
+    return {...p, comps};
+  });
+
+  let html = '<div style="max-width:900px;margin:0 auto">';
+
+  areaData.forEach((area, aIdx) => {
+    const isTop = aIdx===0;
+    const isMid = aIdx===1;
+    const isBot = aIdx===2;
+    // Pyramid trapezoid widths
+    const widthPct = isTop?'50%':isMid?'75%':'100%';
+
+    html += `<div style="display:flex;align-items:stretch;${aIdx>0?'margin-top:-1px':''}">`;
+
+    // LEFT: pyramid block
+    html += `<div style="width:${widthPct};margin:0 auto 0 ${isTop?'25%':isMid?'12.5%':'0'};flex-shrink:0;position:relative">`;
+    html += `<div style="
+      background:${area.color};
+      color:white;
+      padding:${isTop?'20px 24px':'24px 28px'};
+      ${isTop?'border-radius:12px 12px 0 0;clip-path:polygon(15% 0, 85% 0, 100% 100%, 0 100%)':''}
+      ${isMid?'clip-path:polygon(8% 0, 92% 0, 100% 100%, 0 100%)':''}
+      ${isBot?'clip-path:polygon(4% 0, 96% 0, 100% 100%, 0 100%);border-radius:0 0 4px 4px':''}
+      text-align:center;
+      min-height:${isTop?'80px':isMid?'140px':'100px'};
+      display:flex;align-items:center;justify-content:center;
+    ">
+      <div>
+        <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;opacity:.8;margin-bottom:4px">Area</div>
+        <div style="font-size:${isTop?'13':'14'}px;font-weight:700;line-height:1.3">${area.area}</div>
+      </div>
+    </div>`;
+    html += '</div>';
+
+    // RIGHT: competences list
+    html += `<div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:8px 0 8px 20px;min-width:280px">`;
+    area.comps.forEach(c => {
+      html += `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;flex-wrap:wrap">`;
+      html += `<span style="font-size:13px;font-weight:600;color:var(--neutral-900)">${c.name}</span>`;
+      html += `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--neutral-300)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>`;
+      c.skills.forEach(s=>{
+        html += `<span class="pyr-skill-tag">${s}</span>`;
+      });
+      html += '</div>';
+    });
+    html += '</div>';
+    html += '</div>';
+  });
+
+  html += '</div>';
+  return html;
+}
+
+// ═══════════════ TABS ═══════════════
 function rTabs(){
   return`<div class="tabs"><button class="tab ${areaF==='all'?'active':''}" onclick="areaF='all';render()">All Areas</button>${AREAS.map(a=>`<button class="tab ${areaF===a?'active':''}" onclick="areaF='${a.replace(/'/g,"\\'")}';render()">${a}</button>`).join('')}</div>`;
 }
 
+// ═══════════════ CARD ═══════════════
 function rCard(d,idx){
   const di=pd(d.desc),hq=d.q1||d.q2,sd=SD[d.skill];
   const svgArr='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
@@ -286,14 +418,14 @@ ${d.rat?`<div class="rationale-strip">${svgInfo}<p>${d.rat}</p></div>`:''}
 </div></div>`;
 }
 
+// ═══════════════ SECONDARY VIEWS ═══════════════
 function rSkills(){
   const inScope=[...new Set(DATA.map(d=>d.skill))];
   let filtered=inScope;
   if(sq)filtered=filtered.filter(s=>s.toLowerCase().includes(sq)||(SD[s]?.d||'').toLowerCase().includes(sq)||Object.keys(SD[s]?.bi||{}).some(k=>k.toLowerCase().includes(sq))||Object.values(SD[s]?.bi||{}).some(v=>v.toLowerCase().includes(sq)));
   if(!filtered.length)return`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No skills found</h3><p>Try adjusting your search.</p></div>`;
   return`<div style="margin-bottom:16px;font-size:13px;color:var(--neutral-500)">${filtered.length} Skillvue skills in scope</div><div class="mapping-grid">${filtered.map(sn=>{
-    const sd=SD[sn];if(!sd)return'';
-    const mf=DATA.filter(d=>d.skill===sn);
+    const sd=SD[sn];if(!sd)return'';const mf=DATA.filter(d=>d.skill===sn);
     return`<div class="mapping-card"><div style="padding:20px 24px">
 <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px">
 <div><div style="font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:6px">${sn}</div><div style="font-size:14px;color:var(--neutral-700);line-height:1.6">${sd.d}</div></div>
@@ -312,19 +444,21 @@ function rQuestions(){
 }
 
 function rIndicators(){
-  const filtered=gf();
-  const rows=[];
-  filtered.forEach(d=>d.inds.forEach(ind=>{rows.push({ind,def:gid(d.skill,ind),skill:d.skill,comp:d.comp,area:d.area})}));
+  const filtered=gf();const rows=[];
+  filtered.forEach(d=>d.inds.forEach(ind=>{rows.push({ind,def:gid(d.skill,ind),skill:d.skill,comp:d.comp})}));
   if(!rows.length)return`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg><h3>No indicators found</h3><p>Try adjusting your search.</p></div>`;
   return`${rTabs()}<div style="background:var(--neutral-0);border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200);overflow:auto"><table class="data-table"><thead><tr><th>Behavioral Indicator</th><th style="min-width:260px">Definition</th><th>Skillvue Skill</th><th>Fidia Competence</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--neutral-900)"><span class="indicator-dot"></span>${r.ind}</span></td><td style="font-size:12px;color:var(--neutral-500)">${r.def||'\u2014'}</td><td><span class="tag tag-accent">${r.skill}</span></td><td><span class="tag tag-neutral" style="font-size:11px">${r.comp}</span></td></tr>`).join('')}</tbody></table></div><div style="margin-top:12px;font-size:13px;color:var(--neutral-500);text-align:right">${rows.length} indicators total</div>`;
 }
 
+// ═══════════════ RENDER ═══════════════
 function render(){
   const c=document.getElementById('content'),f=gf();
+  if(view==='overview'){c.innerHTML=rOverview();return}
   if(view==='skills'){c.innerHTML=rSkills();return}
   if(view==='questions'){c.innerHTML=rQuestions();return}
   if(view==='indicators'){c.innerHTML=rIndicators();return}
-  c.innerHTML=`${view==='overview'?rStats():''}${rTabs()}${f.length?`<div class="mapping-grid">${f.map((d,i)=>rCard(d,i)).join('')}</div>`:`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try adjusting your search or filter.</p></div>`}`;
+  // model view
+  c.innerHTML=`${rTabs()}${f.length?`<div class="mapping-grid">${f.map((d,i)=>rCard(d,i)).join('')}</div>`:`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try adjusting your search or filter.</p></div>`}`;
 }
 render();
 </script>
