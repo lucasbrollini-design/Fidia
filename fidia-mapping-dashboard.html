@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fidia MSR Competency Mapping — Skillvue</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #6769FF; --primary-hover: #5557DD; --primary-light: #EDEDFF; --primary-text: #3730A3;
+    --neutral-900: #111827; --neutral-700: #374151; --neutral-500: #6B7280; --neutral-400: #9CA3AF;
+    --neutral-300: #D1D5DB; --neutral-200: #E5E7EB; --neutral-100: #F3F4F6; --neutral-50: #F9FAFB; --neutral-0: #FFFFFF;
+    --info-bg: #EFF6FF; --info-text: #1D4ED8;
+    --success-bg: #F0FDF4; --success-text: #15803D;
+    --warning-bg: #FFFBEB; --warning-text: #B45309;
+    --danger-bg: #FEF2F2; --danger-text: #B91C1C;
+    --gradient-start: #FFB74B; --gradient-mid: #FF6550; --gradient-end: #6769FF;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.08); --shadow-md: 0 4px 12px rgba(0,0,0,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'Inter',system-ui,sans-serif;background:var(--neutral-50);color:var(--neutral-700);font-size:14px;line-height:1.5}
+
+  .sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:var(--neutral-0);border-right:1px solid var(--neutral-200);display:flex;flex-direction:column;z-index:100;transition:width 200ms}
+  .sidebar.collapsed{width:55px}
+  .sidebar.collapsed .sidebar-label,.sidebar.collapsed .logo-text,.sidebar.collapsed .sidebar-section-title{display:none}
+  .sidebar.collapsed .nav-item{justify-content:center;padding:0}
+  .sidebar-header{height:56px;display:flex;align-items:center;padding:0 16px;border-bottom:1px solid var(--neutral-200);gap:10px;flex-shrink:0}
+  .logo-icon{width:28px;height:28px;border-radius:8px;background:linear-gradient(135deg,var(--gradient-start),var(--gradient-mid),var(--gradient-end));display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .logo-icon svg{width:14px;height:14px}
+  .logo-text{font-size:16px;font-weight:700;color:var(--neutral-900);white-space:nowrap}
+  .sidebar-nav{flex:1;padding:12px 8px;overflow-y:auto}
+  .sidebar-section-title{font-size:11px;font-weight:600;color:var(--neutral-400);text-transform:uppercase;letter-spacing:.05em;padding:16px 12px 6px;white-space:nowrap}
+  .nav-item{height:40px;display:flex;align-items:center;gap:10px;padding:0 12px;border-radius:8px;cursor:pointer;color:var(--neutral-700);text-decoration:none;font-size:14px;font-weight:500;transition:all 150ms;white-space:nowrap}
+  .nav-item:hover{background:var(--neutral-50)}
+  .nav-item.active{background:var(--primary-light);color:var(--primary);border-left:2px solid var(--primary)}
+  .nav-item.active svg{color:var(--primary)}
+  .nav-item svg{width:20px;height:20px;color:var(--neutral-400);flex-shrink:0}
+  .sidebar-label{overflow:hidden;text-overflow:ellipsis}
+  .sidebar-footer{padding:12px 8px;border-top:1px solid var(--neutral-200);flex-shrink:0}
+  .collapse-btn{height:36px;display:flex;align-items:center;justify-content:center;gap:10px;padding:0 12px;border-radius:8px;cursor:pointer;width:100%;color:var(--neutral-500);font-size:13px;font-weight:500;background:none;border:none;transition:all 150ms;font-family:inherit}
+  .collapse-btn:hover{background:var(--neutral-100)}
+
+  .main{margin-left:260px;transition:margin-left 200ms}
+  .sidebar.collapsed~.main{margin-left:55px}
+  .topbar{height:56px;background:var(--neutral-0);border-bottom:1px solid var(--neutral-200);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
+  .topbar-title{font-size:16px;font-weight:600;color:var(--neutral-900)}
+  .search-box{height:36px;border:1.5px solid var(--neutral-300);border-radius:8px;padding:0 12px 0 36px;font-size:14px;background:var(--neutral-0);width:280px;transition:border-color 150ms;font-family:inherit}
+  .search-box:focus{border-color:var(--primary);outline:none;box-shadow:0 0 0 2px var(--primary-light)}
+  .search-wrap{position:relative}
+  .search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--neutral-400);pointer-events:none}
+  .content{padding:24px;max-width:1280px}
+
+  .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px}
+  .stat-card{background:var(--neutral-0);border-radius:12px;padding:20px 24px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200)}
+  .stat-label{font-size:12px;font-weight:600;color:var(--neutral-500);text-transform:uppercase;letter-spacing:.03em;margin-bottom:6px}
+  .stat-value{font-size:28px;font-weight:700;color:var(--neutral-900)}
+  .stat-sub{font-size:12px;color:var(--neutral-500);margin-top:4px}
+
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--neutral-200);margin-bottom:24px;overflow-x:auto}
+  .tab{height:44px;padding:0 20px;display:flex;align-items:center;font-size:13px;font-weight:500;color:var(--neutral-500);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all 150ms;background:none;border-top:none;border-left:none;border-right:none;font-family:inherit}
+  .tab:hover{color:var(--neutral-700)}
+  .tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+
+  .mapping-grid{display:flex;flex-direction:column;gap:16px}
+  .mapping-card{background:var(--neutral-0);border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200);overflow:hidden;transition:box-shadow 200ms}
+  .mapping-card:hover{box-shadow:var(--shadow-md)}
+  .card-header{display:flex;align-items:stretch;cursor:pointer;min-height:64px}
+  .card-area-strip{width:4px;flex-shrink:0}
+  .area-foundational{background:linear-gradient(180deg,#3B82F6,#6366F1)}
+  .area-communication{background:linear-gradient(180deg,#F97316,#EF4444)}
+  .area-sales{background:linear-gradient(180deg,#22C55E,#14B8A6)}
+  .card-header-content{flex:1;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;gap:16px}
+  .card-header-left{display:flex;align-items:center;gap:16px;flex:1;min-width:0}
+  .competence-name{font-size:15px;font-weight:600;color:var(--neutral-900)}
+  .arrow-icon{display:flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:8px;flex-shrink:0;color:var(--neutral-400);transition:all 200ms}
+  .mapping-card.open .arrow-icon{transform:rotate(180deg);color:var(--primary)}
+  .mapping-arrow{display:flex;align-items:center;gap:8px;flex-shrink:0}
+  .mapping-arrow svg{width:20px;height:20px;color:var(--neutral-300)}
+
+  .tag{height:24px;padding:0 10px;border-radius:9999px;font-size:12px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+  .tag-accent{background:var(--primary-light);color:#5557DD}
+  .tag-neutral{background:var(--neutral-100);color:var(--neutral-700)}
+  .match-badge{height:22px;padding:0 8px;border-radius:9999px;font-size:11px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .match-direct{background:var(--success-bg);color:var(--success-text)}
+  .match-mapped{background:var(--primary-light);color:#5557DD}
+
+  .card-body{display:none;border-top:1px solid var(--neutral-200)}
+  .mapping-card.open .card-body{display:block}
+  .card-body-grid{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .card-section{padding:20px 24px}
+  .card-section+.card-section{border-left:1px solid var(--neutral-200)}
+  .section-label{font-size:11px;font-weight:600;color:var(--neutral-500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+  .section-label svg{width:14px;height:14px}
+
+  .skill-def-block{background:var(--primary-light);border-radius:8px;padding:14px 16px;border-left:3px solid var(--primary)}
+  .skill-def-name{font-size:14px;font-weight:600;color:var(--neutral-900);margin-bottom:4px}
+  .skill-def-text{font-size:13px;color:var(--neutral-700);line-height:1.55}
+
+  .indicator-list{list-style:none;padding:0}
+  .indicator-item{padding:8px 0;border-bottom:1px solid var(--neutral-100)}
+  .indicator-item:last-child{border-bottom:none}
+  .indicator-header{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--neutral-900)}
+  .indicator-dot{width:6px;height:6px;border-radius:50%;background:var(--primary);flex-shrink:0}
+  .indicator-def{font-size:12px;color:var(--neutral-500);line-height:1.5;margin-top:3px;padding-left:14px}
+
+  .description-list{list-style:none;padding:0}
+  .description-item{display:flex;gap:10px;font-size:13px;color:var(--neutral-700);padding:6px 0;line-height:1.55}
+  .desc-num{display:flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--neutral-100);color:var(--neutral-500);font-size:11px;font-weight:600;flex-shrink:0;margin-top:1px}
+
+  .questions-row{border-top:1px solid var(--neutral-200);display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .question-card{padding:20px 24px}
+  .question-card+.question-card{border-left:1px solid var(--neutral-200)}
+  .q-badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:9999px;font-size:11px;font-weight:600;margin-bottom:10px}
+  .q-badge-sit{background:var(--warning-bg);color:var(--warning-text)}
+  .q-badge-exp{background:var(--info-bg);color:var(--info-text)}
+  .q-badge svg{width:12px;height:12px}
+  .question-text{font-size:13px;color:var(--neutral-700);line-height:1.6}
+
+  .rationale-strip{border-top:1px solid var(--neutral-200);padding:16px 24px;background:var(--neutral-50);display:flex;align-items:flex-start;gap:10px}
+  .rationale-strip svg{width:16px;height:16px;color:var(--info-text);flex-shrink:0;margin-top:1px}
+  .rationale-strip p{font-size:13px;color:var(--neutral-500);line-height:1.55;font-style:italic}
+
+  .empty-state{text-align:center;padding:64px 24px}
+  .empty-state svg{width:48px;height:48px;color:var(--neutral-300);margin-bottom:16px}
+  .empty-state h3{font-size:16px;font-weight:600;color:var(--neutral-900);margin-bottom:8px}
+  .empty-state p{font-size:14px;color:var(--neutral-500)}
+
+  .data-table{width:100%;border-collapse:collapse}
+  .data-table thead th{text-align:left;padding:12px 16px;font-size:12px;font-weight:600;color:var(--neutral-700);background:var(--neutral-100);position:sticky;top:56px;z-index:10}
+  .data-table tbody td{padding:10px 16px;font-size:13px;color:var(--neutral-700);border-top:1px solid var(--neutral-200);vertical-align:top}
+  .data-table tbody tr:hover{background:var(--neutral-50)}
+
+  /* Skill cards grid for Skills view */
+  .skill-grid-card{background:var(--neutral-50);border-radius:8px;padding:12px 14px;border:1px solid var(--neutral-200)}
+  .skill-grid-card .ind-name{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--neutral-900);margin-bottom:4px}
+  .skill-grid-card .ind-def{font-size:12px;color:var(--neutral-500);line-height:1.5;padding-left:14px}
+
+  @media(max-width:1024px){
+    .stats-row{grid-template-columns:repeat(2,1fr)}
+    .card-body-grid{grid-template-columns:1fr}
+    .card-section+.card-section{border-left:none;border-top:1px solid var(--neutral-200)}
+    .questions-row{grid-template-columns:1fr}
+    .question-card+.question-card{border-left:none;border-top:1px solid var(--neutral-200)}
+  }
+  @media(max-width:768px){
+    .sidebar{display:none}.main{margin-left:0!important}
+    .stats-row{grid-template-columns:1fr}.search-box{width:180px}
+  }
+</style>
+</head>
+<body>
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="logo-icon"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+    <span class="logo-text">Skillvue</span>
+  </div>
+  <div class="sidebar-nav">
+    <div class="sidebar-section-title">Mapping</div>
+    <a class="nav-item active" data-view="overview">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      <span class="sidebar-label">Overview</span>
+    </a>
+    <a class="nav-item" data-view="competences">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/><rect width="20" height="14" x="2" y="6" rx="2"/></svg>
+      <span class="sidebar-label">Competences</span>
+    </a>
+    <a class="nav-item" data-view="questions">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="sidebar-label">Questions</span>
+    </a>
+    <div class="sidebar-section-title">Framework</div>
+    <a class="nav-item" data-view="skills">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span class="sidebar-label">Skill Definitions</span>
+    </a>
+    <a class="nav-item" data-view="indicators">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>
+      <span class="sidebar-label">Indicators</span>
+    </a>
+  </div>
+  <div class="sidebar-footer">
+    <button class="collapse-btn" onclick="document.getElementById('sidebar').classList.toggle('collapsed')">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M9 3v18"/><path d="m14 9-3 3 3 3"/></svg>
+      <span class="sidebar-label">Collapse</span>
+    </button>
+  </div>
+</nav>
+
+<div class="main" id="main">
+  <header class="topbar">
+    <span class="topbar-title">Fidia MSR — Competency Mapping</span>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      <input class="search-box" type="text" placeholder="Search competences, skills, indicators\u2026" id="searchInput" oninput="handleSearch()">
+    </div>
+  </header>
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const SD={
+"Demonstrating Acumen":{d:"Identifying and exploiting commercial opportunities, maintaining market awareness, and managing financial and organizational levers to create value.",bi:{"Monitoring Markets":"Staying informed about market trends, competitor actions, and customer needs to anticipate changes.","Identifying Opportunities":"Spotting gaps or novel combinations of resources that can be turned into viable initiatives.","Anticipating Trends":"Exercising business acumen to predict market trends and seize commercial opportunities with accuracy.","Controlling Costs":"Managing expenditures prudently to protect margins and allocate resources effectively."}},
+"Delivering Result":{d:"Ensuring outputs meet required standards and are delivered on time through systematic work and quality control.",bi:{"Focusing on Customers":"Understanding and prioritizing customer requirements and responding to feedback.","Setting Quality Standards":"Defining and communicating rigorous criteria for output results.","Working Systematically":"Following organized procedures and logical workflows to maintain consistency and efficiency.","Maintaining Quality Processes":"Upholding documented processes and controls that sustain output quality.","Maintaining Productivity":"Sustaining output rates and efficiency to meet operational targets."}},
+"Presenting":{d:"Conveying information clearly and compellingly to individuals or groups; adapting style and medium to audience needs.",bi:{"Speaking Fluently":"Communicating verbally with clarity, appropriate pace, and minimal hesitation.","Explaining Concepts":"Translating complex ideas into understandable terms and justifying viewpoints logically.","Articulating Key Points":"Highlighting the most important elements of a case succinctly and persuasively.","Speaking Publicly":"Delivering structured presentations to audiences with clarity and engagement.","Projecting Credibility":"Conveying competence, trustworthiness, and confidence through content, tone, and nonverbal behavior.","Responding to Audience":"Handling questions, feedback, and unexpected issues from listeners with poise and relevance."}},
+"Influencing Opinion":{d:"Shaping others\u2019 attitudes, beliefs, or behaviors through strategic communication, framing, and emotional appeal.",bi:{"Making an Impact":"Delivering messages or actions that leave a memorable impression on others.","Framing Conversations":"Steering discussions to highlight priorities, frame issues, and guide decision-making.","Appealing to Emotions":"Using emotional content or framing to connect with audiences and motivate change."}},
+"Emotional Intelligence":{d:"Expressing and controlling emotions according to the circumstances to reflect professionalism.",bi:{"Showing Consideration":"Respecting differences in views and backgrounds and treating others courteously.","Showing Empathy":"Sensing and responding to others\u2019 emotions and perspectives with care and understanding.","Stabilizing Emotion":"Regulating emotional responses to remain composed and constructive.","Tolerating Criticism":"Receiving feedback without defensiveness; extracting useful information, and adapting behavior when appropriate.","Managing Conflict":"Identifying, addressing, and resolving interpersonal or group disagreements constructively to restore or improve working relationships."}},
+"Negotiating":{d:"Reaching mutually acceptable agreements through trade-offs, bargaining, and problem-solving.",bi:{"Promoting Ideas":"Vividly sketching concepts or initiatives and explaining their value to gain buy-in.","Gaining Agreement":"Securing commitment from stakeholders through consensus-building.","Managing Politics":"Navigating organizational power dynamics, stakeholder interests, and informal influence networks to advance objectives."}},
+"Problem Solving":{d:"Critically examining information to test assumptions, evaluate options, generate solutions, and make reasoned judgments.",bi:{"Evaluating Information":"Breaking down data and sources, assessing validity and relevance, and synthesizing findings.","Testing Assumptions":"Proactively questioning premises, designing inquiries, and collecting evidence to confirm or refute hypotheses.","Producing Solutions":"Generating practical, evidence-based options and implementation steps to resolve problems.","Making Judgments":"Weighing evidence, trade-offs, and uncertainties to arrive at defensible conclusions.","Demonstrating Systems Thinking":"Recognizing interdependencies within complex systems to provide holistic solutions."}},
+"Cognitive Flexibility":{d:"Adjusting thoughts, behaviors, and interpersonal approaches to align with new conditions, ideas, or cultural contexts.",bi:{"Adapting Situations":"Modifying actions or plans to accommodate changing circumstances.","Gathering Information":"Systematically sourcing relevant data, evidence, and perspectives to inform understanding or decisions.","Adapting Interpersonal Style":"Altering communication and behavior to better fit different people or circumstances.","Showing Cultural Awareness":"Recognizing and respecting cultural differences and adjusting behavior accordingly.","Managing Ambiguity":"Operating effectively even when information is incomplete or unclear."}},
+"Building Relations":{d:"Establishing and maintaining positive interpersonal connections across contexts to create mutual support, access resources, and facilitate collaboration.",bi:{"Building Relationship":"Creating mutual trust, warmth, and ease in interactions to promote cooperation.","Developing Network":"Actively developing and sustaining professional contacts and relationships that provide information, support, and opportunities.","Relating Across Levels":"Creating opportunities to engage effectively with people at different hierarchic or functional levels."}},
+"Focusing on Others":{d:"Understanding and considering the position of colleagues or stakeholders in a constructive and altruistic manner.",bi:{"Understanding Others":"Making efforts to perceive others\u2019 perspectives, motivations, and needs.","Listening to Others":"Actively processing and responding to others\u2019 communications.","Consulting Others":"Seeking input, feedback, and expertise from relevant stakeholders when making decisions or plans.","Supporting Others":"Providing practical help, resources, or encouragement to assist colleagues in achieving tasks or coping with challenges.","Caring for Others":"Demonstrating genuine concern for colleagues\u2019 well-being and taking actions to promote it."}},
+"Demonstrating Expertise":{d:"Using and developing domain-specific knowledge, physical skills, or technological tools to perform tasks efficiently.",bi:{"Applying Technical Expertise":"Implementing specialized knowledge and methods accurately to accomplish technical tasks.","Developing Technical Expertise":"Systematically developing domain knowledge through learning and practice.","Using Technology":"Using appropriate digital or physical tools to support analysis, communication, and task execution."}},
+"Learning Plasticity":{d:"The ability to acquire, organize, and apply new knowledge or skills to improve performance and inform decisions.",bi:{"Learning Quickly":"Absorbing and applying new information or skills with speed and accuracy.","Accepting New Ideas":"Being open to novel concepts and willing to consider and test them.","Thinking Quickly":"Generating rapid solutions while maintaining accuracy.","Supporting Organizational Learning":"Facilitating knowledge sharing, reflection, and institutionalization of lessons across the organization.","Managing Knowledge":"Capturing, organizing, curating, and making accessible organizational knowledge and best practices."}}
+};
+
+const DATA=[
+{area:"Foundational Professional Competences",ac:"area-foundational",comp:"Market Awareness",desc:"1: Knows the strengths and weaknesses of own products and those of competitors.\n2: Knows local dynamics (PTO) by adapting business offerings to regional peculiarities.\n3: Investigates the products used by the customer and highlights the advantages of one\u2019s own product over the one in use.\n4: Provides suggestions/input to colleagues based on observations of customer behavior and competitors.",skill:"Demonstrating Acumen",mt:"mapped",inds:["Monitoring Markets","Identifying Opportunities","Anticipating Trends","Controlling Costs"],rat:"Market awareness maps to all four Acumen BIs: monitoring competitor/market dynamics, identifying commercial gaps, anticipating trends, and understanding cost levers.",q1:"Describe a past work situation in which you recognized a potential opportunity for clients but faced internal concerns related to costs, risks, or feasibility. How did you evaluate the situation, address the concerns raised, and what outcome followed?",q2:"You are reviewing your territory\u2019s performance data and notice that a specific therapeutic area shows untapped potential \u2014 physicians in the region are prescribing older treatments despite clinical evidence supporting newer alternatives. At the same time, your manager raises concerns about the cost of launching a focused campaign. How would you evaluate the opportunity, weigh the commercial risks, and decide on a course of action?",q1t:"experience",q2t:"situational"},
+{area:"Foundational Professional Competences",ac:"area-foundational",comp:"Customer Centric Approach",desc:"1: Actively listens to customers to understand their needs without interrupting.\n2: Proposes customized solutions by highlighting specific benefits that directly address the customer\u2019s needs.\n3: Anticipates potential problems the customer may encounter by offering preventive solutions.\n4: Monitors and provides follow-up on the progress of proposed solutions and adjusts the strategy based on the results and suggestions received from the practitioner.",skill:"Delivering Result",mt:"mapped",inds:["Focusing on Customers","Setting Quality Standards","Working Systematically","Maintaining Quality Processes","Maintaining Productivity"],rat:"Customer centricity is embedded across all five Delivering Result BIs: understanding customer needs, setting standards that reflect customer expectations, working systematically, maintaining quality, and sustaining productivity.",q1:"A key client reports recurring issues affecting product quality and delivery reliability, creating uncertainty about continuing the partnership. How would you examine the situation, move the necessary actions forward, and communicate next steps to stabilize the relationship?",q2:"Describe a past work situation in which you identified that a client\u2019s expectations were not being fully met. How did you recognize the gap, what actions did you take to address it, and what was the outcome for the client relationship?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Presenting",mt:"mapped",inds:["Speaking Fluently","Explaining Concepts","Articulating Key Points","Speaking Publicly","Projecting Credibility","Responding to Audience"],rat:"All six Presenting BIs are directly relevant for MSR communication with HCPs: fluency, explaining complex medical concepts, articulating key messages, public speaking, projecting credibility, and handling questions.",q1:"During a discussion about a technical product or solution with senior stakeholders, attention seems to decrease early on. How would you adapt the way information is conveyed during the interaction to support clarity and shared understanding?",q2:"Describe a past work situation in which a discussion about a product, idea, or proposal became challenging due to questions or pushback from others. How did the exchange unfold, and what was the final outcome?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Communication / Influence",desc:"1: Uses clear and appropriate language, integrating with visual aids to make complex concepts understandable.\n2: Listens actively, avoiding interruptions, places attention to verbal, nonverbal and paraverbal cues and use of open-ended questions.\n3: Seeks the best channel for the visit that satisfies both (e.g., call, video call\u2026).\n4: In closing, formulate clear proposals, summarize key points, and agree on next steps/follow up.",skill:"Influencing Opinion",mt:"mapped",inds:["Making an Impact","Framing Conversations","Appealing to Emotions"],rat:"The influence dimension of this competence requires shaping HCP attitudes and decisions. All three BIs \u2014 making an impact, framing conversations, and appealing to emotions \u2014 are essential in persuasive scientific communication.",q1:null,q2:null},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Emotional Intelligence",desc:"1: Identifies verbal and nonverbal signals (tone of voice, facial expressions, gestures) to understand the clinician\u2019s state of mind and adapt approach.\n2: Remains calm and knows techniques for managing one\u2019s emotions even in the face of objections or contrary statements from the interlocutor.\n3: Shows genuine attention during conversations by nodding, asking focused questions, and allowing space for the practitioner to express him/herself.\n4: Gathers feedback from the practitioner and engages him or her in the conversation, showing openness.",skill:"Emotional Intelligence",mt:"direct",inds:["Showing Consideration","Showing Empathy","Stabilizing Emotion","Tolerating Criticism","Managing Conflict"],rat:"Direct 1:1 match. All five BIs \u2014 showing consideration, empathy, stabilizing emotion, tolerating criticism, and managing conflict \u2014 are core to the interpersonal effectiveness required in HCP-facing roles.",q1:"During a scheduled visit, you notice that the physician appears visibly frustrated and distracted. The physician begins to respond curtly to your opening remarks. How would you read the situation, manage your own reaction, and adjust the interaction to maintain a constructive dialogue?",q2:"Describe a past work situation in which you had to manage a tense or emotionally charged interaction with a client, colleague, or stakeholder. How did you recognize the emotional dynamics at play, how did you regulate your own response, and what outcome resulted?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Negotiations",desc:"1: Explains in a clear manner that addresses the client\u2019s specific needs.\n2: Listens carefully to client\u2019s concerns/objections, rephrases to make sure he/she understands or asks questions.\n3: Responds calmly to objections, showing openness, providing accurate answers also supported by data and evidence.\n4: Emphasizes and makes perceived value of the solution and how it can benefit both physician and patients.",skill:"Negotiating",mt:"direct",inds:["Promoting Ideas","Gaining Agreement","Managing Politics"],rat:"Direct 1:1 match. All three BIs cover the commercial negotiation cycle: promoting clinical/commercial proposals, gaining stakeholder agreement, and navigating organizational politics.",q1:"A hospital pharmacy committee is reviewing your product alongside two competitor options. The lead pharmacist raises concerns about pricing and asks you to justify why your solution should be selected despite a higher cost. How would you structure your response to address the objection, demonstrate value, and work toward an agreement that satisfies both parties?",q2:"Describe a past work situation in which you had to negotiate with a client or stakeholder who had strong objections or competing priorities. How did you listen to their concerns, present your position, and what agreement or outcome was ultimately reached?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options, e.g., combination of products, different strategies to best meet needs.\n4: Does follow up to check whether the proposed solutions is in line and works or gathers insights for improvement.",skill:"Problem Solving",mt:"mapped",inds:["Evaluating Information","Testing Assumptions","Producing Solutions","Making Judgments","Demonstrating Systems Thinking"],rat:"Solution orientation maps to all five Problem Solving BIs: evaluating clinical or commercial information, testing assumptions, generating practical solutions, making judgments under uncertainty, and applying systems thinking.",q1:"A dermatologist you visit regularly mentions that the current treatment protocol is producing inconsistent results for a specific patient segment. How would you approach the conversation to understand the underlying issue, evaluate possible options, and propose a tailored solution?",q2:"Describe a past work situation in which a client or stakeholder presented a complex problem that did not have an obvious solution. How did you gather information, evaluate alternatives, and what solution did you propose? What was the outcome?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Solutions Oriented",desc:"1: Researches the physician\u2019s needs by asking specific questions.\n2: Listens and proposes customized solutions based on the client\u2019s needs.\n3: Offers different options, e.g., combination of products, different strategies to best meet needs.\n4: Does follow up to check whether the proposed solutions is in line and works or gathers insights for improvement.",skill:"Cognitive Flexibility",mt:"mapped",inds:["Adapting Situations","Gathering Information","Adapting Interpersonal Style","Showing Cultural Awareness","Managing Ambiguity"],rat:"Being solutions-oriented in a dynamic healthcare environment also requires all five Cognitive Flexibility BIs: adapting to changing circumstances, gathering information, adjusting interpersonal approach, showing cultural awareness, and managing ambiguity.",q1:null,q2:null},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact, availability over time, follow up, etc.\n2: Positions as a trusted advisor, sharing information, best practices, suggesting solutions.\n3: Presents clear information and openly admits if the answer to a question is not known, promising to provide clarification quickly.\n4: Involves the physician, when possible, in activities such as educational meetings or scientific projects.",skill:"Building Relations",mt:"direct",inds:["Building Relationship","Developing Network","Relating Across Levels"],rat:"Direct 1:1 match. All three BIs \u2014 building individual relationships, developing a professional network, and relating across hierarchical levels \u2014 map precisely to MSR relationship requirements.",q1:"You have recently been assigned a new territory and need to build relationships with physicians who have long-standing ties to a competitor\u2019s representative. How would you approach establishing trust, demonstrating value, and building a lasting professional relationship over time?",q2:"Describe a past work situation in which you successfully built a strong professional relationship with a client or stakeholder who was initially distant or unresponsive. What steps did you take over time, and what was the result?",q1t:"situational",q2t:"experience"},
+{area:"Medical-Scientific & Persuasive Communication Skills",ac:"area-communication",comp:"Relationship Building",desc:"1: Works from the perspective of a stable and lasting relationship with regular contact, availability over time, follow up, etc.\n2: Positions as a trusted advisor, sharing information, best practices, suggesting solutions.\n3: Presents clear information and openly admits if the answer to a question is not known, promising to provide clarification quickly.\n4: Involves the physician, when possible, in activities such as educational meetings or scientific projects.",skill:"Focusing on Others",mt:"mapped",inds:["Understanding Others","Listening to Others","Consulting Others","Supporting Others","Caring for Others"],rat:"The consultative, empathic dimension of relationship building requires all five Focusing on Others BIs: understanding others\u2019 perspectives, active listening, consulting stakeholders, supporting colleagues/customers, and demonstrating genuine care.",q1:null,q2:null},
+{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"CRM",desc:"1: Regularly updates the CRM with customer and HCP information, tracking \u201con-target\u201d doctors and their potential.\n2: Records key information from customer interactions, including needs and objections and accurately reports sample disbursement for all product categories.\n3: Submits privacy notices to HCPs and verifying that their privacy preferences align with the intended activity.\n4: Completes training videos from headquarters, engages with the content, and seeks clarification on new CRM features to enhance performance.",skill:"Demonstrating Expertise",mt:"mapped",inds:["Applying Technical Expertise","Developing Technical Expertise","Using Technology"],rat:"CRM proficiency has a behavioral dimension \u2014 applying technical expertise (using the system correctly), developing expertise (staying updated on features), and using technology (integrating CRM into daily workflow).",q1:"You notice that your CRM data for several high-potential physicians is incomplete \u2014 some visit notes are missing, sample disbursements have not been logged consistently, and privacy consent records are outdated. How would you prioritize and address the data gaps, ensure compliance, and prepare a reliable overview of your activity?",q2:"Describe a past work situation in which your ability to use a tool or system effectively made a meaningful difference in your work results. What specific features or practices did you rely on, and what impact did this have on your performance?",q1t:"situational",q2t:"experience"},
+{area:"Optimizing Sales Systems Management",ac:"area-sales",comp:"Digital Tools (Office, Excel etc.)",desc:"1: Aptitude in using new social platforms to connect with HCP, share relevant content or learn about industry trends.\n2: Ability to create charts or presentations with excel or power point.\n3: Uses other applications to better manage their operations.\n4: Ability to use video call systems (like MS Teams) and messaging in an effective way.",skill:"Learning Plasticity",mt:"mapped",inds:["Learning Quickly","Accepting New Ideas","Thinking Quickly","Supporting Organizational Learning","Managing Knowledge"],rat:null,q1:"Your team is asked to start using a new digital platform to share scientific content with healthcare professionals remotely. You have limited experience with this type of tool, and your first virtual meeting with a key opinion leader is scheduled in a few days. How would you prepare yourself and ensure the interaction is effective?",q2:"Describe a past work situation in which you had to quickly learn to use a new digital tool, application, or platform that was unfamiliar to you. How did you approach the learning process, what difficulties did you encounter, and how did it change the way you work?",q1t:"situational",q2t:"experience"}
+];
+
+const AREAS=[...new Set(DATA.map(d=>d.area))];
+let view='overview',areaF='all',sq='';
+
+document.querySelectorAll('.nav-item[data-view]').forEach(el=>{
+  el.addEventListener('click',()=>{view=el.dataset.view;document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));el.classList.add('active');render()})
+});
+function handleSearch(){sq=document.getElementById('searchInput').value.toLowerCase();render()}
+function toggleCard(i){document.querySelector(`[data-card="${i}"]`).classList.toggle('open')}
+
+function gf(){
+  let f=DATA;
+  if(areaF!=='all')f=f.filter(d=>d.area===areaF);
+  if(sq)f=f.filter(d=>d.comp.toLowerCase().includes(sq)||d.skill.toLowerCase().includes(sq)||d.inds.some(i=>i.toLowerCase().includes(sq))||d.area.toLowerCase().includes(sq)||(SD[d.skill]?.d||'').toLowerCase().includes(sq));
+  return f;
+}
+function pd(desc){return desc.split('\n').map(l=>l.replace(/^\d+:\s*/,'').trim()).filter(Boolean)}
+function gid(skill,ind){const s=SD[skill];if(!s)return'';for(const[k,v]of Object.entries(s.bi)){if(k.toLowerCase()===ind.toLowerCase())return v}return''}
+
+function rStats(){
+  const uc=new Set(DATA.map(d=>d.comp)).size,us=new Set(DATA.map(d=>d.skill)).size,ti=DATA.reduce((s,d)=>s+d.inds.length,0),tq=DATA.filter(d=>d.q1).length+DATA.filter(d=>d.q2).length;
+  return`<div class="stats-row"><div class="stat-card"><div class="stat-label">Fidia Competences</div><div class="stat-value">${uc}</div><div class="stat-sub">Across ${AREAS.length} areas</div></div><div class="stat-card"><div class="stat-label">Skillvue Skills</div><div class="stat-value">${us}</div><div class="stat-sub">${DATA.filter(d=>d.mt==='direct').length} direct \xb7 ${DATA.filter(d=>d.mt==='mapped').length} mapped</div></div><div class="stat-card"><div class="stat-label">Behavioral Indicators</div><div class="stat-value">${ti}</div><div class="stat-sub">Avg ${(ti/us).toFixed(1)} per skill</div></div><div class="stat-card"><div class="stat-label">Assessment Questions</div><div class="stat-value">${tq}</div><div class="stat-sub">Situational & Experience-based</div></div></div>`;
+}
+function rTabs(){
+  return`<div class="tabs"><button class="tab ${areaF==='all'?'active':''}" onclick="areaF='all';render()">All Areas</button>${AREAS.map(a=>`<button class="tab ${areaF===a?'active':''}" onclick="areaF='${a.replace(/'/g,"\\'")}';render()">${a}</button>`).join('')}</div>`;
+}
+
+function rCard(d,idx){
+  const di=pd(d.desc),hq=d.q1||d.q2,sd=SD[d.skill];
+  const svgArr='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+  const svgChev='<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>';
+  const svgDoc='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14,2 14,8 20,8"/></svg>';
+  const svgStar='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg>';
+  const svgInfo='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>';
+  const svgMsg='<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>';
+  const svgClk='<circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/>';
+
+  return`<div class="mapping-card" data-card="${idx}">
+<div class="card-header" onclick="toggleCard(${idx})">
+<div class="card-area-strip ${d.ac}"></div>
+<div class="card-header-content">
+<div class="card-header-left">
+<div><div class="competence-name">${d.comp}</div><div style="margin-top:4px;display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="tag tag-neutral" style="font-size:11px">${d.area.split(' ').slice(0,2).join(' ')}</span></div></div>
+<div class="mapping-arrow">${svgArr}</div>
+<div><div style="display:flex;align-items:center;gap:8px"><span class="tag tag-accent">${d.skill}</span><span class="match-badge ${d.mt==='direct'?'match-direct':'match-mapped'}">${d.mt==='direct'?'1:1 Direct':'Mapped'}</span></div><div style="margin-top:4px;font-size:12px;color:var(--neutral-500)">${d.inds.length} indicators${hq?' \xb7 '+[d.q1,d.q2].filter(Boolean).length+' questions':''}</div></div>
+</div>
+<div class="arrow-icon">${svgChev}</div>
+</div></div>
+<div class="card-body">
+${sd?`<div style="padding:16px 24px;border-bottom:1px solid var(--neutral-200)"><div class="skill-def-block"><div class="skill-def-name">${d.skill}</div><div class="skill-def-text">${sd.d}</div></div></div>`:''}
+<div class="card-body-grid">
+<div class="card-section"><div class="section-label">${svgDoc} Fidia Skill Description</div><ol class="description-list">${di.map((item,i)=>`<li class="description-item"><span class="desc-num">${i+1}</span>${item}</li>`).join('')}</ol></div>
+<div class="card-section"><div class="section-label">${svgStar} Behavioral Indicators</div><ul class="indicator-list">${d.inds.map(ind=>{const def=gid(d.skill,ind);return`<li class="indicator-item"><div class="indicator-header"><span class="indicator-dot"></span>${ind}</div>${def?`<div class="indicator-def">${def}</div>`:''}</li>`}).join('')}</ul></div>
+</div>
+${hq?`<div class="questions-row">${d.q1?`<div class="question-card"><div class="q-badge ${d.q1t==='situational'?'q-badge-sit':'q-badge-exp'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d.q1t==='situational'?svgMsg:svgClk}</svg>${d.q1t==='situational'?'Situational':'Experience-based'}</div><p class="question-text">${d.q1}</p></div>`:''}${d.q2?`<div class="question-card"><div class="q-badge ${d.q2t==='situational'?'q-badge-sit':'q-badge-exp'}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d.q2t==='situational'?svgMsg:svgClk}</svg>${d.q2t==='situational'?'Situational':'Experience-based'}</div><p class="question-text">${d.q2}</p></div>`:''}</div>`:''}
+${d.rat?`<div class="rationale-strip">${svgInfo}<p>${d.rat}</p></div>`:''}
+</div></div>`;
+}
+
+function rSkills(){
+  const inScope=[...new Set(DATA.map(d=>d.skill))];
+  let filtered=inScope;
+  if(sq)filtered=filtered.filter(s=>s.toLowerCase().includes(sq)||(SD[s]?.d||'').toLowerCase().includes(sq)||Object.keys(SD[s]?.bi||{}).some(k=>k.toLowerCase().includes(sq))||Object.values(SD[s]?.bi||{}).some(v=>v.toLowerCase().includes(sq)));
+  if(!filtered.length)return`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No skills found</h3><p>Try adjusting your search.</p></div>`;
+  return`<div style="margin-bottom:16px;font-size:13px;color:var(--neutral-500)">${filtered.length} Skillvue skills in scope</div><div class="mapping-grid">${filtered.map(sn=>{
+    const sd=SD[sn];if(!sd)return'';
+    const mf=DATA.filter(d=>d.skill===sn);
+    return`<div class="mapping-card"><div style="padding:20px 24px">
+<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px">
+<div><div style="font-size:16px;font-weight:700;color:var(--neutral-900);margin-bottom:6px">${sn}</div><div style="font-size:14px;color:var(--neutral-700);line-height:1.6">${sd.d}</div></div>
+<div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap">${mf.map(m=>`<span class="tag tag-neutral" style="font-size:11px">${m.comp}</span>`).join('')}</div>
+</div>
+<div style="font-size:11px;font-weight:600;color:var(--neutral-500);text-transform:uppercase;letter-spacing:.04em;margin-bottom:10px">${Object.keys(sd.bi).length} Behavioral Indicators</div>
+<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:8px">${Object.entries(sd.bi).map(([n,df])=>`<div class="skill-grid-card"><div class="ind-name"><span class="indicator-dot"></span>${n}</div><div class="ind-def">${df}</div></div>`).join('')}</div>
+</div></div>`;
+  }).join('')}</div>`;
+}
+
+function rQuestions(){
+  const filtered=gf().filter(d=>d.q1||d.q2);
+  if(!filtered.length)return`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><h3>No questions found</h3><p>Try adjusting your filters or search.</p></div>`;
+  return`${rTabs()}<div class="mapping-grid">${filtered.map(d=>`<div class="mapping-card" style="overflow:visible;position:relative"><div class="card-area-strip ${d.ac}" style="position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:12px 0 0 12px"></div><div style="padding:20px 24px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap"><span class="tag tag-accent">${d.skill}</span><span style="color:var(--neutral-400);font-size:12px">from</span><span class="tag tag-neutral">${d.comp}</span></div><div class="questions-row" style="border-top:1px solid var(--neutral-200);margin:0 -24px -20px;border-bottom-left-radius:12px;border-bottom-right-radius:12px;overflow:hidden">${d.q1?`<div class="question-card"><div class="q-badge ${d.q1t==='situational'?'q-badge-sit':'q-badge-exp'}">${d.q1t==='situational'?'Situational':'Experience-based'}</div><p class="question-text">${d.q1}</p></div>`:''}${d.q2?`<div class="question-card"><div class="q-badge ${d.q2t==='situational'?'q-badge-sit':'q-badge-exp'}">${d.q2t==='situational'?'Situational':'Experience-based'}</div><p class="question-text">${d.q2}</p></div>`:''}</div></div></div>`).join('')}</div>`;
+}
+
+function rIndicators(){
+  const filtered=gf();
+  const rows=[];
+  filtered.forEach(d=>d.inds.forEach(ind=>{rows.push({ind,def:gid(d.skill,ind),skill:d.skill,comp:d.comp,area:d.area})}));
+  if(!rows.length)return`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3L12 3Z"/></svg><h3>No indicators found</h3><p>Try adjusting your search.</p></div>`;
+  return`${rTabs()}<div style="background:var(--neutral-0);border-radius:12px;box-shadow:var(--shadow-sm);border:1px solid var(--neutral-200);overflow:auto"><table class="data-table"><thead><tr><th>Behavioral Indicator</th><th style="min-width:260px">Definition</th><th>Skillvue Skill</th><th>Fidia Competence</th></tr></thead><tbody>${rows.map(r=>`<tr><td><span style="display:flex;align-items:center;gap:8px;font-weight:500;color:var(--neutral-900)"><span class="indicator-dot"></span>${r.ind}</span></td><td style="font-size:12px;color:var(--neutral-500)">${r.def||'\u2014'}</td><td><span class="tag tag-accent">${r.skill}</span></td><td><span class="tag tag-neutral" style="font-size:11px">${r.comp}</span></td></tr>`).join('')}</tbody></table></div><div style="margin-top:12px;font-size:13px;color:var(--neutral-500);text-align:right">${rows.length} indicators total</div>`;
+}
+
+function render(){
+  const c=document.getElementById('content'),f=gf();
+  if(view==='skills'){c.innerHTML=rSkills();return}
+  if(view==='questions'){c.innerHTML=rQuestions();return}
+  if(view==='indicators'){c.innerHTML=rIndicators();return}
+  c.innerHTML=`${view==='overview'?rStats():''}${rTabs()}${f.length?`<div class="mapping-grid">${f.map((d,i)=>rCard(d,i)).join('')}</div>`:`<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg><h3>No results found</h3><p>Try adjusting your search or filter.</p></div>`}`;
+}
+render();
+</script>
+</body>
+</html>
